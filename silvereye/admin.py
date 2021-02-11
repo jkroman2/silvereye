@@ -1,7 +1,11 @@
-from django.contrib import admin
+from django.contrib import admin, auth
 
 from silvereye.models import Publisher, PublisherMetrics, FileSubmission, PublisherMonthlyCounts
 
+from import_export.admin import ImportExportModelAdmin
+
+class UserAdmin(ImportExportModelAdmin):
+    pass
 
 class PublisherAdmin(admin.ModelAdmin):
     list_display = (

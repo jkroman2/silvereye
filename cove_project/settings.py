@@ -34,7 +34,7 @@ DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 CACHE_VALIDATION_ERRORS = True
 
 # Set variable to "TRUE" to enable
-STORE_OCDS_IN_S3 = os.getenv('STORE_OCDS_IN_S3') == 'TRUE'
+STORE_OCDS_IN_S3 = os.getenv('STORE_OCDS_IN_S3') == 'FALSE'
 if STORE_OCDS_IN_S3:
     # AWS settings
     # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     "cove",
     "cove.input",
     "cove_ocds",
-    
+
     'storages',
 
     'bluetail',
@@ -77,6 +77,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'mathfilters',
     'magiclink',
+    'import_export',
+
 ]
 
 
@@ -98,7 +100,7 @@ MIDDLEWARE = (
 AUTHENTICATION_BACKENDS = (
     'magiclink.backends.MagicLinkBackend',
     'django.contrib.auth.backends.ModelBackend',
-    
+
 )
 
 # Set Djangos login URL to the magiclink login page
@@ -111,17 +113,24 @@ MAGICLINK_LOGIN_FAILED_TEMPLATE_NAME = 'magiclink/login_failed.html'
 # Optional:
 # If this setting is set to False a user account will be created the first
 # time a user requests a login link.
-MAGICLINK_REQUIRE_SIGNUP = True
+MAGICLINK_REQUIRE_SIGNUP = False
 MAGICLINK_SIGNUP_TEMPLATE_NAME = 'magiclink/signup.html'
 
+# How long a magic link is valid for before returning an error
+MAGICLINK_AUTH_TIMEOUT = 660  # In second - Default is 5 minutes
+
+# Override the default magic link length
+# Warning: Overriding this setting has security implications, shorter tokens
+# are much more susceptible to brute force attacks*
+MAGICLINK_TOKEN_LENGTH = 30
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '465'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD =  ''
+EMAIL_HOST_USER = 'telkomlms@gmail.com'
+EMAIL_HOST_PASSWORD =  'T3lk0mlms'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
